@@ -164,3 +164,4 @@ cython_debug/
 models/*
 !models/adapter_config.json
 datasets/databricks-dolly-15k-ja-zundamon.json
+ChatVRM.bak/

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import VrmViewer from "@/components/vrmViewer";
 import { ViewerContext } from "@/features/vrmViewer/viewerContext";
 import {
@@ -18,27 +18,36 @@ import { Menu } from "@/components/menu";
 // import { GitHubLink } from "@/components/githubLink";
 import { Meta } from "@/components/meta";
 
-const m_plus_2 = M_PLUS_2({
-  variable: "--font-m-plus-2",
-  display: "swap",
-  preload: false,
-});
-
-const montserrat = Montserrat({
-  variable: "--font-montserrat",
-  display: "swap",
-  subsets: ["latin"],
-});
-
 export default function Home() {
   const { viewer } = useContext(ViewerContext);
 
   const [systemPrompt, setSystemPrompt] = useState(SYSTEM_PROMPT);
-  const [openAiKey, setOpenAiKey] = useState("");
+  const [openAiKey, setOpenAiKey] = useState("(使用していません)");
+  const [koeiromapKey, setKoeiromapKey] = useState("");
   const [koeiroParam, setKoeiroParam] = useState<KoeiroParam>(DEFAULT_PARAM);
   const [chatProcessing, setChatProcessing] = useState(false);
   const [chatLog, setChatLog] = useState<Message[]>([]);
   const [assistantMessage, setAssistantMessage] = useState("");
+
+  useEffect(() => {
+    if (window.localStorage.getItem("chatVRMParams")) {
+      const params = JSON.parse(
+        window.localStorage.getItem("chatVRMParams") as string
+      );
+      setSystemPrompt(params.systemPrompt);
+      setKoeiroParam(params.koeiroParam);
+      setChatLog(params.chatLog);
+    }
+  }, []);
+
+  useEffect(() => {
+    process.nextTick(() =>
+      window.localStorage.setItem(
+        "chatVRMParams",
+        JSON.stringify({ systemPrompt, koeiroParam, chatLog })
+      )
+    );
+  }, [systemPrompt, koeiroParam, chatLog]);
 
   const handleChangeChatLog = useCallback(
     (targetIndex: number, text: string) => {
@@ -60,9 +69,9 @@ export default function Home() {
       onStart?: () => void,
       onEnd?: () => void
     ) => {
-      speakCharacter(screenplay, viewer, onStart, onEnd);
+      speakCharacter(screenplay, viewer, koeiromapKey, onStart, onEnd);
     },
-    [viewer]
+    [viewer, koeiromapKey]
   );
 
   /**
@@ -70,10 +79,10 @@ export default function Home() {
    */
   const handleSendChat = useCallback(
     async (text: string) => {
-      // if (!openAiKey) {
-      //   setAssistantMessage("APIキーが入力されていません");
-      //   return;
-      // }
+      if (!openAiKey) {
+        setAssistantMessage("APIキーが入力されていません");
+        return;
+      }
 
       const newMessage = text;
 
@@ -179,9 +188,14 @@ export default function Home() {
   );
 
   return (
-    <div className={`${m_plus_2.variable} ${montserrat.variable}`}>
+    <div className={"font-M_PLUS_2"}>
       <Meta />
-      {/* <Introduction openAiKey={openAiKey} onChangeAiKey={setOpenAiKey} /> */}
+      <Introduction
+        openAiKey={openAiKey}
+        koeiroMapKey={koeiromapKey}
+        onChangeAiKey={setOpenAiKey}
+        onChangeKoeiromapKey={setKoeiromapKey}
+      />
       <VrmViewer />
       <MessageInputContainer
         isChatProcessing={chatProcessing}
@@ -193,10 +207,14 @@ export default function Home() {
         chatLog={chatLog}
         koeiroParam={koeiroParam}
         assistantMessage={assistantMessage}
+        koeiromapKey={koeiromapKey}
         onChangeAiKey={setOpenAiKey}
         onChangeSystemPrompt={setSystemPrompt}
         onChangeChatLog={handleChangeChatLog}
         onChangeKoeiromapParam={setKoeiroParam}
+        handleClickResetChatLog={() => setChatLog([])}
+        handleClickResetSystemPrompt={() => setSystemPrompt(SYSTEM_PROMPT)}
+        onChangeKoeiromapKey={setKoeiromapKey}
       />
     </div>
   );

@@ -13,10 +13,14 @@ type Props = {
   chatLog: Message[];
   koeiroParam: KoeiroParam;
   assistantMessage: string;
+  koeiromapKey: string;
   onChangeSystemPrompt: (systemPrompt: string) => void;
   onChangeAiKey: (key: string) => void;
   onChangeChatLog: (index: number, text: string) => void;
   onChangeKoeiromapParam: (param: KoeiroParam) => void;
+  handleClickResetChatLog: () => void;
+  handleClickResetSystemPrompt: () => void;
+  onChangeKoeiromapKey: (key: string) => void;
 };
 export const Menu = ({
   openAiKey,
@@ -24,10 +28,14 @@ export const Menu = ({
   chatLog,
   koeiroParam,
   assistantMessage,
+  koeiromapKey,
   onChangeSystemPrompt,
   onChangeAiKey,
   onChangeChatLog,
   onChangeKoeiromapParam,
+  handleClickResetChatLog,
+  handleClickResetSystemPrompt,
+  onChangeKoeiromapKey,
 }: Props) => {
   const [showSettings, setShowSettings] = useState(false);
   const [showChatLog, setShowChatLog] = useState(false);
@@ -46,6 +54,13 @@ export const Menu = ({
       onChangeAiKey(event.target.value);
     },
     [onChangeAiKey]
+  );
+
+  const handleChangeKoeiromapKey = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      onChangeKoeiromapKey(event.target.value);
+    },
+    [onChangeKoeiromapKey]
   );
 
   const handleChangeKoeiroParam = useCallback(
@@ -118,12 +133,16 @@ export const Menu = ({
           chatLog={chatLog}
           systemPrompt={systemPrompt}
           koeiroParam={koeiroParam}
+          koeiromapKey={koeiromapKey}
           onClickClose={() => setShowSettings(false)}
           onChangeAiKey={handleAiKeyChange}
           onChangeSystemPrompt={handleChangeSystemPrompt}
           onChangeChatLog={onChangeChatLog}
           onChangeKoeiroParam={handleChangeKoeiroParam}
           onClickOpenVrmFile={handleClickOpenVrmFile}
+          onClickResetChatLog={handleClickResetChatLog}
+          onClickResetSystemPrompt={handleClickResetSystemPrompt}
+          onChangeKoeiromapKey={handleChangeKoeiromapKey}
         />
       )}
       {!showChatLog && assistantMessage && (

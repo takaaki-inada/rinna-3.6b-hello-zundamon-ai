@@ -12,7 +12,7 @@ ChatVRMの各機能は主に以下の技術を使用しています。
 - ユーザーの音声の認識
     - [Web Speech API(SpeechRecognition)](https://developer.mozilla.org/ja/docs/Web/API/SpeechRecognition)
 - 読み上げ音声の生成
-    - [Koeiro API](http://koeiromap.rinna.jp/)
+    - [Koemotion/Koeiromap API](https://koemotion.rinna.co.jp/)
 - 3Dキャラクターの表示
     - [@pixiv/three-vrm](https://github.com/pixiv/three-vrm)
 
@@ -37,12 +37,12 @@ npm run dev
 
 ---
 
-## Koeiro API
-ChatVRMでは返答文の音声読み上げにKoeiro APIを使用しています。
+## Koeiromap API
+ChatVRMでは返答文の音声読み上げにKoemotionのKoeiromap APIを使用しています。
 
-Koeiro APIの仕様や利用規約については以下のリンクや公式サイトをご確認ください。
+Koeiromap APIの仕様や利用規約については以下のリンクや公式サイトをご確認ください。
 
-- [http://koeiromap.rinna.jp/](http://koeiromap.rinna.jp/)
+- [https://koemotion.rinna.co.jp/](https://koemotion.rinna.co.jp/)
 
 ## Zundamon VRM
 [ずんだもん（人型）公式MMDモデル、VRM、VRChatアバター - 東北ずん子ショップ【公式】 - BOOTH](https://booth.pm/ja/items/3733351)
