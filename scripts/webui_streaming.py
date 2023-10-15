@@ -18,7 +18,7 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"device: {device}")
 
 # NOTE: transformers 4.30.0.dev0
-subprocess.run(f"cp models/adapter_config.json {LORA_WEIGHTS}", shell=True)
+subprocess.run(f"cp scripts/adapter_config.json {LORA_WEIGHTS}", shell=True)
 subprocess.run(f"cp {LORA_WEIGHTS}/pytorch_model.bin {LORA_WEIGHTS}/adapter_model.bin", shell=True)
 
 model_id = "rinna/japanese-gpt-neox-3.6b-instruction-ppo"

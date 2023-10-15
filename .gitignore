@@ -162,6 +162,5 @@ cython_debug/
 # rinna-3.6b-hello-zundamon-ai
 .venv/*
 models/*
-!models/adapter_config.json
 datasets/databricks-dolly-15k-ja-zundamon.json
 ChatVRM.bak/

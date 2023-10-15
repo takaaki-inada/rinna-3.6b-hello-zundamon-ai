@@ -10,7 +10,7 @@ print(f"device: {device}")
 LORA_WEIGHTS='./models/rinna_3b_zundamon_prof_homu_20230615_short/checkpoint-80'
 
 # NOTE: transformers 4.30.0.dev0
-subprocess.run(f"cp models/adapter_config.json {LORA_WEIGHTS}", shell=True)
+subprocess.run(f"cp scripts/adapter_config.json {LORA_WEIGHTS}", shell=True)
 subprocess.run(f"cp {LORA_WEIGHTS}/pytorch_model.bin {LORA_WEIGHTS}/adapter_model.bin", shell=True)
 
 def make_prompt(message):

@@ -5,13 +5,14 @@ import pandas as pd
 import torch
 import torch.nn as nn
 import transformers
-from datasets import Dataset, load_dataset
 from peft import (LoraConfig, TaskType, get_peft_model,
                   get_peft_model_state_dict, prepare_model_for_int8_training,
                   prepare_model_for_kbit_training)
 from transformers import (AutoModelForCausalLM, AutoTokenizer,
                           BitsAndBytesConfig)
 from transformers.trainer_callback import TrainerCallback
+
+from datasets import Dataset, load_dataset
 
 OUTPUT = "./models/rinna_3b_zundamon_prof_homu_20230615/"
 
@@ -20,8 +21,12 @@ MICRO_BATCH_SIZE = 32
 BATCH_SIZE = 128
 GRADIENT_ACCUMULATION_STEPS = BATCH_SIZE // MICRO_BATCH_SIZE
 EPOCHS = 100
+# LoRAのLEARNING_RATEは 5e-4, 3e-4 が良さそう
+# LEARNING_RATE = 5e-4
 LEARNING_RATE = 3e-4
 CUTOFF_LEN = 256
+# LORA_R = 16 にすると RTX 3060 で以下のエラーが出る
+# Error invalid device ordinal at line 359 in file /home/tim/git/bitsandbytes/csrc/pythonInterface.c /arrow/cpp/src/arrow/filesystem/s3fs.cc:2598: arrow::fs::FinalizeS3 was not called even though S3 was initialized.
 LORA_R = 8
 LORA_ALPHA = 16
 LORA_DROPOUT = 0.05
